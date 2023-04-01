@@ -174,17 +174,17 @@ services:
      - repairshop-ca
      - repairshop-peer
 
-  zeppelin:
-    container_name: zeppelin-notebook
-    image: zeppelin-notebook
-    ports:
-      - 8080:8080
-    volumes:
-      - ./zeppelin-notebook/notebook:/opt/zeppelin/notebook
-    environment:
-      DB2_FABRIC_JDBC_URL: "jdbc:db2://db2-fabric:50000/testdb"
-      DB2_FABRIC_DB2_DRIVER: "com.ibm.db2.jcc.DB2Driver"
-      DB2_FABRIC_DB2_USER: "db2inst1"
-      DB2_FABRIC_DB2_PASS: "password"
-    depends_on:
-     - db2-fabric
+#  zeppelin:
+#    container_name: zeppelin-notebook
+#    image: zeppelin-notebook
+#    ports:
+#      - 8080:8080
+#    volumes:
+#      - ./zeppelin-notebook/notebook:/opt/zeppelin/notebook
+#    environment:
+#      DB2_FABRIC_JDBC_URL: "jdbc:db2://db2-fabric:50000/testdb"
+#      DB2_FABRIC_DB2_DRIVER: "com.ibm.db2.jcc.DB2Driver"
+#      DB2_FABRIC_DB2_USER: "db2inst1"
+#      DB2_FABRIC_DB2_PASS: "password"
+#    depends_on:
+#     - db2-fabric

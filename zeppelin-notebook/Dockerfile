@@ -38,7 +38,7 @@ RUN echo "$LOG_TAG update and install basic packages" && \
 
 RUN echo "$LOG_TAG install tini related packages" && \
     apt-get install -y wget curl grep sed dpkg && \
-    TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
+    TINI_VERSION=0.19.0 && \
     curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
     dpkg -i tini.deb && \
     rm tini.deb
@@ -61,24 +61,39 @@ RUN echo "$LOG_TAG Install miniconda2 related packages" && \
     rm ~/miniconda.sh
 ENV PATH /opt/conda/bin:$PATH
 
-RUN echo "$LOG_TAG Install python related packages" && \
-    apt-get -y update && \
-    apt-get install -y python-dev python-pip && \
-    apt-get install -y gfortran && \
+RUN echo "$LOG_TAG Install python related packages"
+RUN apt-get -y update
+RUN apt-get install -y python-dev python-pip
+RUN apt-get install -y gfortran
     # numerical/algebra packages
-    apt-get install -y libblas-dev libatlas-dev liblapack-dev && \
+RUN apt-get install -y libblas-dev libatlas-dev liblapack-dev
     # font, image for matplotlib
-    apt-get install -y libpng-dev libfreetype6-dev libxft-dev && \
+RUN apt-get install -y libpng-dev libfreetype6-dev libxft-dev
     # for tkinter
-    apt-get install -y python-tk libxml2-dev libxslt-dev zlib1g-dev && \
-    conda config --set always_yes yes --set changeps1 no && \
-    conda update -q conda && \
-    conda info -a && \
-    conda config --add channels conda-forge && \
-    conda install -q numpy=1.12.1 pandas=0.21.1 matplotlib=2.1.1 pandasql=0.7.3 ipython=5.4.1 jupyter_client=5.1.0 ipykernel=4.7.0 bokeh=0.12.10 && \
-    pip install --upgrade pip && \
-    pip install --upgrade setuptools && \
-    pip install -q ggplot==0.11.5 grpcio==1.8.2 bkzep==0.4.0
+RUN apt-get install -y python-tk libxml2-dev libxslt-dev zlib1g-dev
+RUN conda config --set always_yes yes --set changeps1 no
+RUN conda update -q conda
+RUN conda info -a
+RUN conda config --add channels conda-forge
+RUN conda install -q numpy=1.12.1 pandas=0.21.1
+RUN conda install -q matplotlib=2.1.1 pandasql=0.7.3 ipython=5.4.1 jupyter_client=5.1.0 ipykernel=4.7.0 bokeh=0.12.10
+RUN conda install -q ggplot==0.11.5
+RUN #conda install -q grpcio
+RUN #conda install -q bkzep
+
+#RUN #python -m pip install -U --upgrade pip
+#RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+#RUN python get-pip.py
+RUN conda update pip
+RUN #pip uninstall -y setuptools && \
+    conda install setuptools && \
+    conda update conda
+
+RUN pip install grpcio
+RUN pip install bkzep
+#RUN pip install --upgrade pip
+#RUN pip install --upgrade setuptools
+#RUN pip install ggplot==0.11.5 grpcio==1.8.2 bkzep==0.4.0
 
 RUN echo "$LOG_TAG Install R related packages" && \
     echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | tee -a /etc/apt/sources.list && \
@@ -102,9 +117,9 @@ RUN echo "$LOG_TAG Download Zeppelin binary" && \
     rm -rf /tmp/zeppelin-${Z_VERSION}-bin-all.tgz && \
     mv /zeppelin-${Z_VERSION}-bin-all ${Z_HOME}
 
-RUN echo "$LOG_TAG Cleanup" && \
-    apt-get autoclean && \
-    apt-get clean
+RUN echo "$LOG_TAG Cleanup"
+#RUN apt-get autoclean && \
+#    apt-get clean
 
 EXPOSE 8080
 
