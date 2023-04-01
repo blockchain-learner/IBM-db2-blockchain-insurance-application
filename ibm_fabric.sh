@@ -11,7 +11,7 @@ ORDERERS=$CLIPATH/ordererOrganizations
 PEERS=$CLIPATH/peerOrganizations
 
 rm -rf $CLIPATH
-$PROJPATH/cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
+cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
 
 sh generate-cfgtx.sh
 
@@ -21,12 +21,16 @@ rm -rf $PROJPATH/insurancePeer/crypto
 rm -rf $PROJPATH/policePeer/crypto
 rm -rf $PROJPATH/repairShopPeer/crypto
 rm -rf $PROJPATH/shopPeer/crypto
+rm -rf $PROJPATH/db2-fabric/crypto
+rm -rf $PROJPATH/zeppelin-notebook/crypto
 # mkdir $PROJPATH/{orderer,insurancePeer,policePeer,repairShopPeer,shopPeer}/crypto
-mkdir $PROJPATH/orderer/crypto
-mkdir $PROJPATH/insurancePeer/crypto
-mkdir $PROJPATH/policePeer/crypto
-mkdir $PROJPATH/repairShopPeer/crypto
-mkdir $PROJPATH/shopPeer/crypto
+mkdir -p $PROJPATH/orderer/crypto
+mkdir -p $PROJPATH/insurancePeer/crypto
+mkdir -p $PROJPATH/policePeer/crypto
+mkdir -p $PROJPATH/repairShopPeer/crypto
+mkdir -p $PROJPATH/shopPeer/crypto
+mkdir -p $PROJPATH/db2-fabric/crypto
+mkdir -p $PROJPATH/zeppelin-notebook/crypto
 # cp -r $ORDERERS/orderer-org/orderers/orderer0/{msp,tls} $PROJPATH/orderer/crypto
 cp -r $ORDERERS/orderer-org/orderers/orderer0/msp $PROJPATH/orderer/crypto
 cp -r $ORDERERS/orderer-org/orderers/orderer0/tls $PROJPATH/orderer/crypto
@@ -43,6 +47,10 @@ cp -r $PEERS/repairshop-org/peers/repairshop-peer/tls $PROJPATH/repairShopPeer/c
 cp -r $PEERS/shop-org/peers/shop-peer/msp $PROJPATH/shopPeer/crypto
 cp -r $PEERS/shop-org/peers/shop-peer/tls $PROJPATH/shopPeer/crypto
 cp $CLIPATH/genesis.block $PROJPATH/orderer/crypto/
+
+cp -r $PEERS/shop-org/ $PROJPATH/db2-fabric/crypto/
+cp -r $PEERS/shop-org $PROJPATH/zeppelin-notebook/crypto/
+cp -r $ORDERERS/orderer-org $PROJPATH/zeppelin-notebook/crypto/
 
 INSURANCECAPATH=$PROJPATH/insuranceCA
 POLICECAPATH=$PROJPATH/policeCA
@@ -111,3 +119,8 @@ cp $PEERS/police-org/users/Admin@police-org/msp/keystore/* $WEBCERTS/Admin@polic
 cp $PEERS/police-org/users/Admin@police-org/msp/signcerts/* $WEBCERTS/
 cp $PEERS/repairshop-org/users/Admin@repairshop-org/msp/keystore/* $WEBCERTS/Admin@repairshop-org-key.pem
 cp $PEERS/repairshop-org/users/Admin@repairshop-org/msp/signcerts/* $WEBCERTS/
+
+echo
+echo "##########################################################"
+echo "#########  IBM FABRIC IBM FABRIC IBM FABRIC ##############"
+echo "##########################################################"
