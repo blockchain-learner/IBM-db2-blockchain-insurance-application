@@ -9,9 +9,9 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 
-RUN npm i && npm i --only=dev \
-&& npm run build \
-&& npm prune
+RUN npm i && npm i --only=dev
+RUN npm run build
+RUN npm prune
 
 EXPOSE 3000
 CMD ["npm", "run", "serve"]
