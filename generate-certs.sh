@@ -5,18 +5,25 @@ echo
 echo "#################################################################"
 echo "#######        Generating cryptographic material       ##########"
 echo "#################################################################"
+
 PROJPATH=$(pwd)
 CLIPATH=$PROJPATH/cli/peers
 ORDERERS=$CLIPATH/ordererOrganizations
 PEERS=$CLIPATH/peerOrganizations
 
+echo "PROJPATH   $PROJPATH"
+echo "CLIPATH    $CLIPATH"
+echo "#################################################################"
+
 rm -rf $CLIPATH
 cryptogen generate --config=$PROJPATH/crypto-config.yaml --output=$CLIPATH
 
+echo
+echo "generate file execute generate-cfgtx.sh"
 sh generate-cfgtx.sh
 
 rm -rf $PROJPATH/{orderer,insurancePeer,policePeer,repairShopPeer,shopPeer,db2-fabric,zeppelin-notebook}/crypto
-mkdir $PROJPATH/{orderer,insurancePeer,policePeer,repairShopPeer,shopPeer,db2-fabric,zeppelin-notebook}/crypto
+mkdir -p $PROJPATH/{orderer,insurancePeer,policePeer,repairShopPeer,shopPeer,db2-fabric,zeppelin-notebook}/crypto
 
 cp -r $ORDERERS/orderer-org/orderers/orderer0/{msp,tls} $PROJPATH/orderer/crypto
 cp -r $PEERS/insurance-org/peers/insurance-peer/{msp,tls} $PROJPATH/insurancePeer/crypto
@@ -79,3 +86,8 @@ cp $PEERS/police-org/users/Admin@police-org/msp/keystore/* $WEBCERTS/Admin@polic
 cp $PEERS/police-org/users/Admin@police-org/msp/signcerts/* $WEBCERTS/
 cp $PEERS/repairshop-org/users/Admin@repairshop-org/msp/keystore/* $WEBCERTS/Admin@repairshop-org-key.pem
 cp $PEERS/repairshop-org/users/Admin@repairshop-org/msp/signcerts/* $WEBCERTS/
+
+echo
+echo "##########################################################"
+echo "#########  IBM FABRIC IBM FABRIC IBM FABRIC ##############"
+echo "##########################################################"
